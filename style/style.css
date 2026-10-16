@@ -1,0 +1,172 @@
+* { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+body {
+margin: 0;
+padding: 30px;
+min-height: 100vh;
+background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+header {
+background: #fff;
+border-radius: 14px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 14px 24px;
+margin-bottom: 30px;
+box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+font-weight: bold;
+color: #333;
+}
+
+.conteudo {
+display: flex;
+gap: 40px;
+align-items: flex-start;
+flex-wrap: wrap;
+justify-content: center;
+}
+
+.pergunta-box {
+background: #fff;
+border-radius: 18px;
+padding: 28px;
+width: 500px;
+min-height: 250px;
+box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+}
+
+.pergunta-box h2 { margin-top: 0; color: #2c3e50; }
+
+#opcoes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+
+.opcao {
+cursor: pointer;
+padding: 12px 14px;
+border: 2px solid #dfe6ee;
+border-radius: 10px;
+background: #f7f9fc;
+transition: background 0.2s, transform 0.15s;
+}
+.opcao:hover { background: #e8f0ff; transform: translateY(-2px); }
+.opcao.correta { background: #8fe3a0; border-color: #4bc46a; }
+.opcao.errada { background: #f4a3a3; border-color: #d9534f; }
+
+#resultado { margin-top: 18px; font-weight: bold; min-height: 20px; color: #2c3e50; }
+
+#btn-nova {
+margin-top: 22px;
+padding: 10px 20px;
+cursor: pointer;
+background: #4facfe;
+color: #fff;
+border: none;
+border-radius: 10px;
+font-weight: bold;
+box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+transition: background 0.2s;
+}
+#btn-nova:hover { background: #2f9bfb; }
+
+.roleta-wrap {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.seta { font-size: 30px; margin-bottom: -10px; z-index: 2; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3)); }
+
+#roleta {
+width: 300px;
+height: 300px;
+border-radius: 50%;
+border: 6px solid #fff;
+display: flex;
+align-items: center;
+justify-content: center;
+color: #fff;
+font-weight: bold;
+text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+background: conic-gradient(
+    #ff6b6b 0deg 60deg,
+    #6bcBff 60deg 120deg,
+    #6bff8e 120deg 180deg,
+    #fff06b 180deg 240deg,
+    #c66bff 240deg 300deg,
+    #ff9f4a 300deg 360deg
+);
+}
+/* Roleta com dez setores e nomes dos prêmios */
+.roleta-wrap { max-width: 100%; }
+#roleta {
+  position: relative;
+  flex: 0 0 auto;
+  overflow: hidden;
+  background: conic-gradient(
+    #ff6b6b 0deg 36deg,
+    #6bcBff 36deg 72deg,
+    #6bff8e 72deg 108deg,
+    #fff06b 108deg 144deg,
+    #c66bff 144deg 180deg,
+    #ff9f4a 180deg 216deg,
+    #ff8fab 216deg 252deg,
+    #72ddf7 252deg 288deg,
+    #b8f2a1 288deg 324deg,
+    #ffd166 324deg 360deg
+  );
+}
+.premio-etiqueta {
+  position: absolute;
+  width: 78px;
+  color: #172033;
+  font-size: 10px;
+  line-height: 1.1;
+  text-align: center;
+  font-weight: 800;
+  text-shadow: 0 1px 0 rgba(255,255,255,.65);
+  overflow-wrap: anywhere;
+  pointer-events: none;
+}
+.dica-roleta { margin: 16px 0 0; max-width: 300px; text-align: center; color: #18324b; font-size: 14px; font-weight: 600; }
+
+.modal-premio[hidden] { display: none !important; }
+.modal-premio {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(10, 20, 35, .72);
+  backdrop-filter: blur(5px);
+}
+.modal-conteudo {
+  position: relative;
+  width: min(420px, 100%);
+  padding: 30px 24px 24px;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 18px 60px rgba(0,0,0,.35);
+  text-align: center;
+  animation: aparecer-premio .25s ease-out;
+}
+.parabens { margin: 0 0 8px; color: #16804a; font-weight: 700; }
+#premio-titulo { margin: 0 0 18px; color: #24364b; font-size: 26px; }
+#premio-imagem { display: block; width: 100%; max-width: 260px; height: 210px; object-fit: contain; margin: 0 auto 20px; }
+.premio-fallback { min-height: 150px; display: flex; align-items: center; justify-content: center; font-size: 90px; margin-bottom: 20px; }
+.premio-fallback[hidden] { display: none !important; }
+.fechar-modal { position: absolute; top: 8px; right: 12px; border: 0; background: transparent; font-size: 30px; cursor: pointer; color: #68778a; }
+.btn-modal-ok { border: 0; border-radius: 10px; padding: 11px 26px; background: #2478e5; color: #fff; font-weight: 700; cursor: pointer; }
+.btn-modal-ok:hover { background: #1764c6; }
+@keyframes aparecer-premio { from { opacity: 0; transform: translateY(10px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+@media (max-width: 520px) {
+  body { padding: 16px; }
+  .pergunta-box { width: 100%; padding: 20px; }
+  #opcoes { grid-template-columns: 1fr; }
+  #roleta { width: 290px; height: 290px; }
+  .premio-etiqueta { width: 72px; font-size: 9px; }
+}

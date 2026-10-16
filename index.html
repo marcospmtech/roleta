@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Questionário com Roleta de Prêmios</title>
+<link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+
+<header>
+  <div>LOGO 1</div>
+  <div>LOGO 2</div>
+</header>
+
+<div class="conteudo">
+  <div class="pergunta-box">
+    <h2 id="pergunta-texto">Pergunta</h2>
+    <div id="opcoes"></div>
+    <div id="resultado"></div>
+    <button id="btn-nova">Nova Pergunta</button>
+  </div>
+
+  <div class="roleta-wrap">
+    <div class="seta">⬇️</div>
+    <div id="roleta" aria-label="Roleta de prêmios"></div>
+    <p class="dica-roleta">Acerte a pergunta para girar e ganhar um prêmio!</p>
+  </div>
+</div>
+
+<div id="premio-modal" class="modal-premio" role="dialog" aria-modal="true" aria-labelledby="premio-titulo" hidden>
+  <div class="modal-conteudo">
+    <button id="fechar-modal" class="fechar-modal" aria-label="Fechar">×</button>
+    <p class="parabens">🎉 Parabéns! Você ganhou</p>
+    <h2 id="premio-titulo"></h2>
+    <img id="premio-imagem" alt="" />
+    <div id="premio-fallback" class="premio-fallback" hidden></div>
+    <button id="btn-modal-ok" class="btn-modal-ok">Continuar</button>
+  </div>
+</div>
+
+<script src="js/perguntas.js"></script>
+<script>
+let perguntaAtual = null;
+let roletaGirando = false;
+
+const premios = [
+  { nome: "Ventilador Portátil", imagem: "assets/ventilador.png", emoji: "🌀" },
+  { nome: "Maquinha de Cabelo", imagem: "assets/maquinha.png", emoji: "💈" },
+  { nome: "Smart Watch", imagem: null, emoji: "⌚" },
+  { nome: "Chapinha", imagem: "assets/chapinha.png", emoji: "💇" },
+  { nome: "Relógio", imagem: "assets/relogio.png", emoji: "⌚" },
+  { nome: "Caixinha de Som", imagem: "assets/caixinha_som.png", emoji: "🔊" },
+  { nome: "Fone de Ouvido", imagem: null, emoji: "🎧" },
+  { nome: "Garrafa Térmica", imagem: "assets/garrafa.png", emoji: "🧴" },
+  { nome: "Lousa de LCD", imagem: "assets/lousa.png", emoji: "✍️" },
+  { nome: "Chaveiro", imagem: "assets/chaveiro.png", emoji: "🔑" }
+];
+
+let premioSorteado = null;
+const roleta = document.getElementById("roleta");
+const modal = document.getElementById("premio-modal");
+
+// Quebra o nome do prêmio em linhas curtas MANUALMENTE.
+// Por quê: dentro de um elemento com rotate(), alguns navegadores
+// (principalmente WebKit/Safari) calculam a quebra automática de linha
+// usando a largura já rotacionada do elemento, não a largura real.
+// Como as etiquetas ficam em ângulos próximos de 90°, essa largura
+// "visual" fica quase zero e o texto quebra letra por letra.
+// Gerando as linhas aqui e inserindo com <br>, o navegador não precisa
+// calcular wrap nenhum dentro da área rotacionada — só desenha linhas prontas.
+function quebrarNome(nome, maxCaracteresPorLinha = 10) {
+  const palavras = nome.split(" ");
+  const linhas = [];
+  let linhaAtual = "";
+
+  palavras.forEach(palavra => {
+    const candidata = linhaAtual ? `${linhaAtual} ${palavra}` : palavra;
+    if (candidata.length > maxCaracteresPorLinha && linhaAtual) {
+      linhas.push(linhaAtual);
+      linhaAtual = palavra;
+    } else {
+      linhaAtual = candidata;
+    }
+  });
+  if (linhaAtual) linhas.push(linhaAtual);
+
+  return linhas;
+}
+
+function montarRoleta() {
+  roleta.innerHTML = "";
+  premios.forEach((premio, indice) => {
+    const angulo = indice * 36 + 18 - 90;
+    const radianos = angulo * Math.PI / 180;
+    const distancia = 91;
+    const etiqueta = document.createElement("div");
+    etiqueta.className = "premio-etiqueta";
+    // innerHTML (não textContent) porque agora inserimos <br> entre as linhas
+    etiqueta.innerHTML = quebrarNome(premio.nome).join("<br>");
+    etiqueta.style.left = `calc(50% + ${Math.cos(radianos) * distancia}px)`;
+    etiqueta.style.top = `calc(50% + ${Math.sin(radianos) * distancia}px)`;
+    etiqueta.style.transform = `translate(-50%, -50%) rotate(${angulo + 90}deg)`;
+    roleta.appendChild(etiqueta);
+  });
+}
+
+function sortearPergunta() {
+  const indice = Math.floor(Math.random() * perguntas.length);
+  perguntaAtual = perguntas[indice];
+  renderizarPergunta();
+}
+
+function renderizarPergunta() {
+  document.getElementById("pergunta-texto").textContent = perguntaAtual.pergunta;
+  document.getElementById("resultado").textContent = "";
+  const opcoesDiv = document.getElementById("opcoes");
+  opcoesDiv.innerHTML = "";
+
+  for (const [letra, texto] of Object.entries(perguntaAtual.opcoes)) {
+    const div = document.createElement("div");
+    div.classList.add("opcao");
+    div.textContent = `${letra}) ${texto}`;
+    div.dataset.letra = letra;
+    div.addEventListener("click", () => verificarResposta(letra, div));
+    opcoesDiv.appendChild(div);
+  }
+}
+
+function verificarResposta(letraEscolhida, elementoClicado) {
+  if (roletaGirando) return;
+  const resultado = document.getElementById("resultado");
+
+  if (letraEscolhida === perguntaAtual.correta) {
+    elementoClicado.classList.add("correta");
+    resultado.textContent = "Você acertou! Girando a roleta...";
+    girarRoleta();
+  } else {
+    elementoClicado.classList.add("errada");
+    resultado.textContent = "Você errou. A resposta certa era " + perguntaAtual.correta;
+  }
+
+  document.querySelectorAll(".opcao").forEach(op => {
+    op.style.pointerEvents = "none";
+  });
+}
+
+function girarRoleta() {
+  if (roletaGirando) return;
+  roletaGirando = true;
+  const indicePremio = Math.floor(Math.random() * premios.length);
+  premioSorteado = premios[indicePremio];
+
+  // Cada prêmio ocupa 36°. O giro final alinha o prêmio sorteado com a seta.
+  const ajusteFinal = (360 - ((indicePremio * 36 + 18) % 360)) % 360;
+  const giroAleatorio = 1800 + ajusteFinal;
+  roleta.style.transition = "none";
+  roleta.style.transform = "rotate(0deg)";
+  void roleta.offsetWidth;
+  roleta.style.transition = "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)";
+  roleta.style.transform = `rotate(${giroAleatorio}deg)`;
+
+  roleta.addEventListener("transitionend", function aoTerminar() {
+    roleta.removeEventListener("transitionend", aoTerminar);
+    roletaGirando = false;
+    mostrarPremio(premioSorteado);
+  });
+}
+
+function mostrarPremio(premio) {
+  document.getElementById("premio-titulo").textContent = premio.nome;
+  const imagem = document.getElementById("premio-imagem");
+  const fallback = document.getElementById("premio-fallback");
+  fallback.hidden = true;
+  imagem.hidden = true;
+  imagem.removeAttribute("src");
+
+  if (premio.imagem) {
+    imagem.src = premio.imagem;
+    imagem.alt = premio.nome;
+    imagem.onload = () => { imagem.hidden = false; fallback.hidden = true; };
+    imagem.onerror = () => {
+      imagem.hidden = true;
+      fallback.textContent = premio.emoji;
+      fallback.hidden = false;
+    };
+  } else {
+    fallback.textContent = premio.emoji;
+    fallback.hidden = false;
+  }
+  modal.hidden = false;
+  document.getElementById("btn-modal-ok").focus();
+}
+
+function fecharPremio() {
+  modal.hidden = true;
+}
+
+document.getElementById("fechar-modal").addEventListener("click", fecharPremio);
+document.getElementById("btn-modal-ok").addEventListener("click", fecharPremio);
+modal.addEventListener("click", evento => {
+  if (evento.target === modal) fecharPremio();
+});
+document.addEventListener("keydown", evento => {
+  if (evento.key === "Escape" && !modal.hidden) fecharPremio();
+});
+
+document.getElementById("btn-nova").addEventListener("click", () => {
+  if (roletaGirando) return;
+  fecharPremio();
+  roleta.style.transition = "none";
+  roleta.style.transform = "rotate(0deg)";
+  void roleta.offsetWidth;
+  roleta.style.transition = "transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)";
+  sortearPergunta();
+});
+
+montarRoleta();
+sortearPergunta();
+</script>
+
+</body>
+</html>
