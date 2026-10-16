@@ -98,5 +98,105 @@ const perguntas = [
     pergunta: "O que diferencia a proposta da NEXUS?",
     opcoes: { A: "Priorizar métodos tradicionais de trabalho", B: "Conectar inovação tecnológica às necessidades profissionais", C: "Desenvolver tecnologias apenas para entretenimento", D: "Limitar a utilização da IA nas empresas" },
     correta: "B"
+  },
+  {
+    pergunta: "Qual é a principal diferença entre um aparelho comum e um dispositivo com IA?",
+    opcoes: { A: "O dispositivo com IA pode aprender padrões e adaptar algumas ações", B: "O dispositivo com IA nunca precisa de energia", C: "O aparelho comum sempre é mais rápido" },
+    correta: "A"
+  },
+  {
+    pergunta: "Como a IA pode ajudar a reduzir o consumo de energia em casa?",
+    opcoes: { A: "Mantendo todos os aparelhos ligados", B: "Ajustando luzes e temperatura conforme o uso", C: "Desligando a internet permanentemente" },
+    correta: "B"
+  },
+  {
+    pergunta: "Como assistentes virtuais conseguem responder a comandos de voz?",
+    opcoes: { A: "Por meio de reconhecimento e processamento da linguagem", B: "Por meio de leitura de pensamentos", C: "Por meio de comandos escritos em papel" },
+    correta: "A"
+  },
+  {
+    pergunta: "Qual é um risco de conectar muitos dispositivos domésticos à internet?",
+    opcoes: { A: "A casa não poderá ter lâmpadas", B: "Os aparelhos deixam de precisar de manutenção", C: "Aumenta a possibilidade de ataques digitais" },
+    correta: "C"
+  },
+  {
+    pergunta: "O que significa personalização em sistemas de IA?",
+    opcoes: { A: "O sistema adapta sugestões às preferências do usuário", B: "O sistema oferece sempre a mesma resposta", C: "O sistema funciona sem receber informações" },
+    correta: "A"
+  },
+  {
+    pergunta: "Como um aspirador robô pode escolher seu caminho pela casa?",
+    opcoes: { A: "Seguindo sempre uma linha reta", B: "Usando sensores e recursos de navegação para mapear o ambiente", C: "Esperando que alguém o carregue por todos os cômodos" },
+    correta: "B"
+  },
+  {
+    pergunta: "Por que a privacidade é importante ao usar assistentes virtuais?",
+    opcoes: { A: "Porque eles não podem executar tarefas", B: "Porque podem coletar ou processar dados pessoais", C: "Porque eliminam todas as senhas" },
+    correta: "B"
+  },
+  {
+    pergunta: "Qual alternativa apresenta um uso da IA na alimentação?",
+    opcoes: { A: "Impedir que alimentos estraguem em qualquer situação", B: "Garantir que toda receita fique perfeita", C: "Sugerir receitas com base nos ingredientes disponíveis" },
+    correta: "C"
+  },
+  {
+    pergunta: "O que é automação doméstica?",
+    opcoes: { A: "O uso de tecnologias para executar tarefas com pouca intervenção humana", B: "A realização manual de todas as tarefas", C: "A substituição de todos os móveis por aparelhos" },
+    correta: "A"
+  },
+  {
+    pergunta: "Por que a IA pode cometer erros ao reconhecer pessoas?",
+    opcoes: { A: "Porque todas as câmeras funcionam sem sensores", B: "Porque os sistemas podem interpretar dados de forma incorreta", C: "Porque a IA só funciona durante o dia" },
+    correta: "B"
+  },
+  {
+    pergunta: "Como a IA pode contribuir para a acessibilidade?",
+    opcoes: { A: "Impedindo que usuários controlem aparelhos", B: "Exigindo que todas as tarefas sejam manuais", C: "Permitindo controlar dispositivos por voz e automatizar atividades" },
+    correta: "C"
+  },
+  {
+    pergunta: "Qual prática ajuda a proteger uma casa inteligente?",
+    opcoes: { A: "Usar a mesma senha em todos os serviços", B: "Manter os aparelhos atualizados e usar senhas fortes", C: "Compartilhar senhas com desconhecidos" },
+    correta: "B"
+  },
+  {
+    pergunta: "O que pode ser uma consequência da dependência excessiva da IA?",
+    opcoes: { A: "A perda de prática em resolver certas tarefas sem tecnologia", B: "A garantia de que nunca haverá falhas", C: "O fim de todos os riscos digitais" },
+    correta: "A"
+  },
+  {
+    pergunta: "Como a IA pode ajudar na manutenção de eletrodomésticos?",
+    opcoes: { A: "Impedindo qualquer desgaste", B: "Substituindo todas as peças automaticamente", C: "Identificando sinais de falhas e alertando sobre manutenção" },
+    correta: "C"
+  },
+  {
+    pergunta: "O que é processamento local em um dispositivo inteligente?",
+    opcoes: { A: "Enviar sempre todos os dados para redes sociais", B: "Realizar parte do processamento no próprio dispositivo", C: "Desligar os sensores para economizar espaço" },
+    correta: "B"
+  },
+  {
+    pergunta: "Por que dispositivos de marcas diferentes podem ter problemas para funcionar juntos?",
+    opcoes: { A: "Porque todos usam exatamente a mesma tecnologia", B: "Porque dispositivos inteligentes não usam internet", C: "Porque podem utilizar padrões ou sistemas incompatíveis" },
+    correta: "C"
+  },
+  {
+    pergunta: "Qual é um benefício de usar IA para organizar compromissos?",
+    opcoes: { A: "Receber lembretes e organizar horários com mais facilidade", B: "Eliminar a necessidade de conferir a agenda", C: "Garantir que nenhum compromisso seja esquecido" },
+    correta: "A"
+  },
+  {
+    pergunta: "Por que é importante verificar informações fornecidas pela IA?",
+    opcoes: { A: "Porque a IA sempre acessa informações corretas", B: "Porque ela pode produzir respostas incorretas ou desatualizadas", C: "Porque todas as respostas são anúncios" },
+    correta: "B"
+  },
+  {
+    pergunta: "Como a IA pode contribuir para uma casa mais sustentável?",
+    opcoes: { A: "Aumentando o desperdício de água", B: "Mantendo luzes acesas o tempo todo", C: "Ajudando a monitorar e reduzir o uso de energia e água" },
+    correta: "C"
+  },
+  {
+    pergunta: "Qual é a atitude mais responsável ao utilizar IA nas tarefas diárias?",
+    opcoes: { A: "Usar a tecnologia com senso crítico e proteger os dados pessoais", B: "Aceitar todas as sugestões sem pensar", C: "Permitir acesso irrestrito a todas as informações pessoais" },
+    correta: "A"
   }
 ];
